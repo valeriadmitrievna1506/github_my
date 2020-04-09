@@ -53,7 +53,7 @@ public class MenuControll : MonoBehaviour
     //----------QUIT----------//
     public void QuitPressed()
     {
-        anim[1].SetBool("pressed", true);
+        anim[2].SetBool("pressed", true);
         StartCoroutine(quit());
     }
     IEnumerator quit()

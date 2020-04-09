@@ -21,7 +21,7 @@ public class MenuControll : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         Debug.Log("PLAY!");
-        //SceneManager.LoadScene("Game1");
+        SceneManager.LoadScene("Game1");
     }
 
     //----------OPTIONS----------//
@@ -60,7 +60,7 @@ public class MenuControll : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         Debug.Log("QUIT!");
-        //Application.Quit();
+        Application.Quit();
     }
 
 }

@@ -19,7 +19,8 @@ public class Settings : MonoBehaviour
         rsl = Screen.resolutions;
         foreach (var i in rsl)
         {
-            resolutions.Add(i.width + "x" + i.height);
+            if (i.width * 9 == i.height * 16)
+                resolutions.Add(i.width + "x" + i.height);
         }
         dropdown.ClearOptions();
         dropdown.AddOptions(resolutions);

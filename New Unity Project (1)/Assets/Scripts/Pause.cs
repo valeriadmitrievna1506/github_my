@@ -6,50 +6,53 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
+    public static bool Paused = false;
     public GameObject PauseMenu;
-    public Animator anim;
-    public bool paused = false;
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && paused == false)    //pause
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            paused = true;
-            StartCoroutine(StartPause());
+            if (Paused)
+            {
+                Debug.Log("hide pause");
+                ResumeGame();
+            } else
+            {
+                Debug.Log("show pause");
+                PauseGame();
+            }
         }
     }
-    public void Back()
+
+    public void PauseGame()
     {
-        paused = false;
-        StartCoroutine(CancelPause());
+        Cursor.visible = true;
+        PauseMenu.SetActive(true);
+        Time.timeScale = 0;
+        Paused = true;
     }
 
-    IEnumerator CancelPause()
+    public void ResumeGame()
+    {
+        Cursor.visible = false;
+        PauseMenu.SetActive(false);
+        Time.timeScale = 1;
+        Paused = false;
+    }
+
+    public void SaveMenu()
     {
         Time.timeScale = 1;
-        anim.SetBool("Paused", paused);
-        Cursor.visible = paused;
-        yield return new WaitForSeconds(1f);
-        PauseMenu.SetActive(paused);
+        StartCoroutine(gameObject.GetComponent<CrossFade>().StartTransition());
+        SceneManager.LoadScene("Menu");
     }
 
-    IEnumerator StartPause()
+    public void SaveExit()
     {
-        PauseMenu.SetActive(paused); ;
-        anim.SetBool("Paused", paused);
-        yield return new WaitForSeconds(1.01f);
-        Cursor.visible = paused;
-        paused = false;
-        Time.timeScale = 0;
-    }
-
-    public void SaveandExittoMainMenu ()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    public void SaveandExitGame ()
-    {
+        Time.timeScale = 1;
+        StartCoroutine(gameObject.GetComponent<CrossFade>().StartTransition());
         Application.Quit();
     }
+
 }

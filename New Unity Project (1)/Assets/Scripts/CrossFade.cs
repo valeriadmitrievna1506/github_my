@@ -14,11 +14,17 @@ public class CrossFade : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
     }
 
-    public IEnumerator loadLevel (string levelIndex)
+    public IEnumerator loadLevel (int levelIndex)
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(levelIndex);
     }
 
+    public IEnumerator loadNextLevel()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 }

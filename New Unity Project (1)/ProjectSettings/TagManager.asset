@@ -5,7 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - level end
+  - Enemy
+  - Bullet
   - enemy
+  - stop
   layers:
   - Default
   - TransparentFX
@@ -17,8 +21,8 @@ TagManager:
   - 
   - Player
   - Enemies
-  - 
-  - 
+  - Ground
+  - bullet
   - 
   - 
   - 
@@ -52,14 +56,14 @@ TagManager:
   - name: Middle
     uniqueID: 2255862697
     locked: 0
-  - name: Front
-    uniqueID: 1012819097
-    locked: 0
   - name: Enemies
     uniqueID: 806298357
     locked: 0
   - name: Player
     uniqueID: 2749341419
+    locked: 0
+  - name: Front
+    uniqueID: 1012819097
     locked: 0
   - name: FRONT
     uniqueID: 2179201579

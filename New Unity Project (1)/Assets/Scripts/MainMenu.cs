@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
-//using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame()
     {
-        StartCoroutine(gameObject.GetComponent<CrossFade>().loadLevel("Game1"));
+        StartCoroutine(gameObject.GetComponent<CrossFade>().loadLevel(1));
     }
 
     public void Awake()
@@ -32,6 +32,7 @@ public class MainMenu : MonoBehaviour
         }
         dropdown.ClearOptions();
         dropdown.AddOptions(resolutions);
+        Screen.SetResolution(rsl[0].width, rsl[0].height, isFullScreen);
     }
 
     public void AudioVolume (float sv)

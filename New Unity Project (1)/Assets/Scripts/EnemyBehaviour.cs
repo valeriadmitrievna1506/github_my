@@ -5,50 +5,55 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public Animator anim;
     public float speed = 100f;
     public float requiredDistance = 10f;
-    float health;
-    public Transform player;
-    float direction = 1f;
+    float enemy_health = 100f;
+    public GameObject player;
+    float direction;
     public bool isRight = false;
+    public Color normalColor;
 
-    void Start()
+    void Awake()
     {
-        health = 100f;
+        normalColor = GetComponent<SpriteRenderer>().color;
     }
 
     void FixedUpdate()
     {
-        anim.SetFloat("xSpeed", Mathf.Abs(rb.velocity.x));
-        PlayerDirection();
-        flip();
-        if ((PlayerDistance() < requiredDistance) && (PlayerDistance() > 1.5f))
+        Death(); // проверка на смерть
+        PlayerDirection(); // в каком направлении стоит игрок
+        flip(); // повернуть врага при необходимости
+
+        if ((PlayerDistance() < requiredDistance) && (PlayerDistance() > 1f)) // условие движения
         {
-            rb.velocity = new Vector2(direction * speed * Time.deltaTime, rb.velocity.y);
+            EnemyMove();
         }
-        StartCoroutine(DamagingByPlayer());
-        StartCoroutine(Death());
     }
 
     float PlayerDistance()
     {
-        return (Mathf.Abs(transform.position.x - player.position.x));
+        return (Mathf.Abs(transform.position.x - player.transform.position.x));
     }
 
     void PlayerDirection()
     {
-        if (player.position.x < transform.position.x) direction = -1f;
+        if (player.transform.position.x < transform.position.x) direction = -1f;
         else direction = 1f;
     }
 
-    IEnumerator DamagingByPlayer()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((PlayerDistance() < 5f) && PlayerBehaviour.shooting)
+        if (collision.gameObject.tag == "Bullet")
         {
-            health -= Random.Range(5, 30);
+            enemy_health -= Random.Range(10, 30);
+            Destroy(collision.gameObject);
+            StartCoroutine(Damaging());
         }
-        yield return new WaitForSeconds(0.2f);
+    }
+
+    void EnemyMove()
+    {
+        rb.velocity = new Vector2(speed * direction * Time.deltaTime, rb.velocity.y);
     }
 
     void flip()
@@ -61,14 +66,20 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    IEnumerator Death()
+    void Death()
     {
-        if (health < 0)
+        if (enemy_health <= 0f)
         {
-            anim.SetBool("Dead", true);
-            yield return new WaitForSeconds(1.6f);
             Destroy(gameObject);
         }
-        
     }
+
+    IEnumerator Damaging()
+    {
+        // смена цвета при нанесении урона
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(25, 181, 0, 255);
+        yield return new WaitForSeconds(0.2f);
+        gameObject.GetComponent<SpriteRenderer>().color = normalColor;
+    }
+
 }
